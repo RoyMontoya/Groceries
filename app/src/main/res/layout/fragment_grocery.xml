@@ -1,0 +1,72 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.example.amado.groceries.GroceryFragment">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/info_layout_size">
+
+    <LinearLayout
+        android:layout_width="@dimen/imageview_size"
+        android:orientation="vertical"
+        android:layout_height="@dimen/info_layout_size">
+
+        <ImageView
+            android:layout_width="@dimen/imageview_size"
+            android:layout_height="@dimen/imageview_size"/>
+
+        <ImageButton
+            android:id="@+id/camera_button"
+            android:src="@android:drawable/ic_menu_camera"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/custom_button_height"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:paddingTop="25dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/info_layout_size">
+    <TextView
+        android:textSize="@dimen/heading_text_size"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:text="@string/grocery_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+        <EditText
+            android:textSize="@dimen/normal_text_size"
+            android:hint="@string/hint_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <include layout="@layout/quantity_units"/>
+
+    </LinearLayout>
+
+        </LinearLayout>
+    <TextView
+        android:textSize="@dimen/heading_text_size"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:text="@string/grocery_notes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:inputType="textMultiLine"
+        android:lines="5"
+        android:gravity="top|left"
+        android:maxLines="6"
+        android:minLines="1"
+        android:scrollbars="vertical"
+        android:hint="@string/hint_notes"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/info_layout_size"/>
+
+</LinearLayout>
+
+

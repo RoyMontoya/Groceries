@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent">
+
+    <TextView
+        android:textSize="@dimen/heading_text_size"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:text="@string/grocery_quantity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+        <EditText
+            android:textSize="@dimen/normal_text_size"
+            android:hint="@string/hint_qty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent">
+
+    <TextView
+        android:textSize="@dimen/heading_text_size"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:text="@string/grocery_unit"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Spinner
+        android:id="@+id/spinner_units"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+
+    </Spinner>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
