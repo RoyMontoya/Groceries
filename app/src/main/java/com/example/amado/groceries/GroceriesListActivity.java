@@ -24,4 +24,8 @@ public class GroceriesListActivity extends ActionBarActivity {
                 .commit();
     }
 
+    @Override
+    public void onBackPressed() {
+        getFragmentManager().popBackStack();
+    }
 }

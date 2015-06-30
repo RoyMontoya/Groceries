@@ -39,6 +39,7 @@
         android:layout_height="wrap_content"/>
 
         <EditText
+            android:id="@+id/name_editText"
             android:textSize="@dimen/normal_text_size"
             android:hint="@string/hint_name"
             android:layout_width="match_parent"
@@ -57,6 +58,7 @@
         android:layout_height="wrap_content"/>
 
     <EditText
+        android:id="@+id/notes_editText"
         android:inputType="textMultiLine"
         android:lines="5"
         android:gravity="top|left"
