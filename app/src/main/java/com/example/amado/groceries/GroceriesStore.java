@@ -7,13 +7,21 @@ import java.util.ArrayList;
  */
 public class GroceriesStore {
 
-    private static ArrayList<Grocery> sGroceries;
+    private static ArrayList<Item> sGroceries;
 
-    public static ArrayList<Grocery> getGroceries() {
+    public static ArrayList<Item> getGroceries() {
         if(sGroceries== null){
-            sGroceries= new ArrayList<Grocery>();
+            sGroceries= new ArrayList<Item>();
         }
         return sGroceries;
+    }
+
+    public static void addItem(Item item){
+        sGroceries.add(item);
+    }
+
+    public static void removeItem(Item item){
+        sGroceries.remove(item);
     }
 
 }

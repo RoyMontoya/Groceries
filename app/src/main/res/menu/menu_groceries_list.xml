@@ -2,7 +2,7 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context=".GroceriesListActivity">
-    <item android:id="@+id/add_grocery"
+    <item android:id="@+id/add_item"
           android:icon="@android:drawable/ic_menu_add"
           android:title="@string/add"
           app:showAsAction="ifRoom"/>

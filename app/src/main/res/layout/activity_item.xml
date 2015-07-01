@@ -2,6 +2,6 @@
           xmlns:tools="http://schemas.android.com/tools"
           android:id="@+id/container2"
           android:name="com.example.amado.groceries.GroceryFragment"
-          tools:layout="@layout/fragment_grocery"
+          tools:layout="@layout/fragment_item"
           android:layout_width="match_parent"
           android:layout_height="match_parent"/>

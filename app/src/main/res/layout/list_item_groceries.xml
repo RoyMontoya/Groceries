@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:paddingTop="4dp"
+              android:paddingBottom="4dp"
+              android:background="@drawable/selected_background"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/name_item"
+        android:text="grocery"
+        android:gravity="center_vertical"
+        android:layout_weight="50"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"/>
+    <TextView
+        android:id="@+id/quantity_item"
+        android:text="quantity"
+        android:gravity="center_vertical"
+        android:layout_weight="25"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"/>
+    <TextView
+        android:id="@+id/unit_item"
+        android:text="unit"
+        android:gravity="center_vertical"
+        android:layout_weight="15"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"/>
+    <CheckBox
+        android:id="@+id/checkBox_item"
+        android:enabled="true"
+        android:focusable="false"
+        android:layout_weight="10"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>
