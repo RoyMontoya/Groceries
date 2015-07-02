@@ -4,12 +4,11 @@ package com.example.amado.groceries;
  * Created by Amado on 25/06/2015.
  */
 public class Item {
-
+    private long id;
     private String name;
     private String unit;
     private int Quantity;
     private String notes;
-    private int price;
     private boolean checked;
 
     public static final String UNIT_KG = "Kg";
@@ -17,6 +16,13 @@ public class Item {
     public static final String UNIT_PZ = "Pz";
     public static final String UNIT_DZ = "Dz";
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public boolean isChecked() {
         return checked;
@@ -32,14 +38,6 @@ public class Item {
 
     public void setNotes(String notes) {
         this.notes = notes;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
     }
 
     public String getUnit() {

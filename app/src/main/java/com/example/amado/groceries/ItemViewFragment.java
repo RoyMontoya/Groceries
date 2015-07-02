@@ -27,13 +27,14 @@ import com.squareup.picasso.Picasso;
 public class ItemViewFragment extends android.app.Fragment implements AdapterView.OnItemSelectedListener{
     private static final String TAG = "GroceryFragment";
     public static final String INDEX = "array_index";
-    private static Item mGrocery;
+    private static Item mItem;
     private int mPosition;
     private Photo mPhoto;
     private static final int CAMERA_REQUEST=0;
     private static boolean isNew;
     public static boolean nameEmpty= false;
     private ImageView mPhotoPreview;
+
 
     public ItemViewFragment() {
     }
@@ -52,11 +53,11 @@ public class ItemViewFragment extends android.app.Fragment implements AdapterVie
         getActivity().setTitle(R.string.grocery_info);
         Bundle args =getActivity().getIntent().getExtras();
         if(args == null){
-            mGrocery = new Item();
+            mItem = new Item();
             isNew= true;
         }else{
             mPosition = args.getInt(GroceriesListFragment.POSITION);
-            mGrocery = GroceriesStore.getGroceries().get(mPosition);
+            mItem = GroceriesStore.getGroceries().get(mPosition);
             isNew= false;
         }
 
@@ -78,21 +79,21 @@ public class ItemViewFragment extends android.app.Fragment implements AdapterVie
         unitsSpinner.setOnItemSelectedListener(this);
 
         EditText nameEdit = (EditText)v.findViewById(R.id.name_editText);
-        nameEdit.setText(mGrocery.getName());
+        nameEdit.setText(mItem.getName());
         checkForEmptyName(nameEdit.getText().toString());
         nameEdit.addTextChangedListener(new ChangeTextWatcher(nameEdit));
         EditText qtyEdit = (EditText)v.findViewById(R.id.qty_editText);
-        qtyEdit.setText(String.valueOf(mGrocery.getQuantity()));
+        qtyEdit.setText(String.valueOf(mItem.getQuantity()));
         qtyEdit.addTextChangedListener(new ChangeTextWatcher(qtyEdit));
         EditText notesEdit = (EditText)v.findViewById(R.id.notes_editText);
-        notesEdit.setText(mGrocery.getNotes());
+        notesEdit.setText(mItem.getNotes());
         notesEdit.addTextChangedListener(new ChangeTextWatcher(notesEdit));
         final CheckBox doneCheckbox = (CheckBox)v.findViewById(R.id.item_checkBox);
-        doneCheckbox.setChecked(mGrocery.isChecked());
+        doneCheckbox.setChecked(mItem.isChecked());
         doneCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mGrocery.setChecked(doneCheckbox.isChecked());
+                mItem.setChecked(doneCheckbox.isChecked());
             }
         });
 
@@ -119,19 +120,25 @@ public class ItemViewFragment extends android.app.Fragment implements AdapterVie
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        mGrocery.setUnit(parent.getItemAtPosition(position).toString());
+        mItem.setUnit(parent.getItemAtPosition(position).toString());
+
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-        mGrocery.setUnit(parent.getItemAtPosition(0).toString());
+        mItem.setUnit(parent.getItemAtPosition(0).toString());
     }
 
-    public static void saveGrocery(){
+    public static void saveItem(){
         if(isNew){
-            GroceriesStore.addItem(mGrocery);
+            //GroceriesStore.addItem(mItem);
+            GroceriesListFragment.mDataSource.createItem(mItem);
+        }else{
+            GroceriesListFragment.mDataSource.updateItem(mItem);
         }
     }
+
+
 
     private class ChangeTextWatcher implements TextWatcher{
         private View view;
@@ -154,16 +161,16 @@ public class ItemViewFragment extends android.app.Fragment implements AdapterVie
             switch (view.getId()){
                 case R.id.name_editText:
                     checkForEmptyName(text);
-                    mGrocery.setName(text);
+                    mItem.setName(text);
                     break;
                 case R.id.qty_editText:
                     if(text.isEmpty()){
                        return;
                     }
-                    mGrocery.setQuantity(Integer.valueOf(text));
+                    mItem.setQuantity(Integer.valueOf(text));
                     break;
                 case R.id.notes_editText:
-                    mGrocery.setNotes(text);
+                    mItem.setNotes(text);
                     break;
             }
         }

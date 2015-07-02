@@ -16,6 +16,10 @@ public class GroceriesStore {
         return sGroceries;
     }
 
+    public static void setGroceries(ArrayList<Item> groceries) {
+        sGroceries = groceries;
+    }
+
     public static void addItem(Item item){
         sGroceries.add(item);
     }

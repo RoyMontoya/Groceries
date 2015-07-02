@@ -30,6 +30,7 @@ public class GroceriesListFragment extends ListFragment {
     public static final String POSITION = "position";
     private ArrayList<Item> mGroceries;
     private GroceriesAdapter mAdapter;
+    public static ItemDataSource mDataSource;
 
 
     public GroceriesListFragment() {
@@ -40,7 +41,7 @@ public class GroceriesListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         setRetainInstance(true);
-
+        mDataSource=new ItemDataSource(getActivity());
 
     }
 
@@ -48,6 +49,10 @@ public class GroceriesListFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_groceries_list, container, false);
+
+        mGroceries = mDataSource.getAllItems();
+        mAdapter = new GroceriesAdapter(mGroceries);
+        setListAdapter(mAdapter);
 
         ListView list =(ListView)v.findViewById(android.R.id.list);
         list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
@@ -71,11 +76,11 @@ public class GroceriesListFragment extends ListFragment {
 
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                switch(item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.item_delete:
-                        for(int i= mAdapter.getCount(); i>=0; i--){
-                            if(getListView().isItemChecked(i)){
-                                GroceriesStore.removeItem(mAdapter.getItem(i));
+                        for (int i = mAdapter.getCount(); i >= 0; i--) {
+                            if (getListView().isItemChecked(i)) {
+                                mDataSource.deleteItem(mAdapter.getItem(i));
                             }
                         }
                         mode.finish();
@@ -95,17 +100,7 @@ public class GroceriesListFragment extends ListFragment {
         });
 
 
-        mGroceries = GroceriesStore.getGroceries();
-        if(mGroceries.size()==0) {
-            Item item = new Item();
-            item.setName("avocado");
-            item.setQuantity(3);
-            item.setUnit(Item.UNIT_PZ);
-            item.setChecked(true);
-            mGroceries.add(item);
-        }
-        mAdapter = new GroceriesAdapter(mGroceries);
-        setListAdapter(mAdapter);
+
 
         return v;
     }
@@ -191,5 +186,9 @@ public class GroceriesListFragment extends ListFragment {
                 return true;
         }
         return super.onContextItemSelected(item);
+    }
+
+    public void updateUI(){
+        ((GroceriesAdapter)getListAdapter()).notifyDataSetChanged();
     }
 }

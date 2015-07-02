@@ -28,7 +28,7 @@ public class ItemViewActivity extends ActionBarActivity {
             Toast.makeText(this, R.string.clean_name_toast, Toast.LENGTH_LONG).show();
             super.onBackPressed();
         }else {
-            ItemViewFragment.saveGrocery();
+            ItemViewFragment.saveItem();
             super.onBackPressed();
         }
     }
