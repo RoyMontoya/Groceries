@@ -1,8 +1,12 @@
 package com.example.amado.groceries;
 
 import android.app.ListFragment;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -25,10 +29,10 @@ import java.util.ArrayList;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class GroceriesListFragment extends ListFragment {
+public class GroceriesListFragment extends ListFragment implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = "GroceriesListFragment";
     public static final String POSITION = "position";
-    private ArrayList<Item> mGroceries;
+    public ArrayList<Item> mGroceries;
     private GroceriesAdapter mAdapter;
     public static ItemDataSource mDataSource;
 
@@ -41,6 +45,7 @@ public class GroceriesListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         setRetainInstance(true);
+        getLoaderManager().initLoader(0, null, this);
         mDataSource=new ItemDataSource(getActivity());
 
     }
@@ -50,9 +55,7 @@ public class GroceriesListFragment extends ListFragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_groceries_list, container, false);
 
-        mGroceries = mDataSource.getAllItems();
-        mAdapter = new GroceriesAdapter(mGroceries);
-        setListAdapter(mAdapter);
+
 
         ListView list =(ListView)v.findViewById(android.R.id.list);
         list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
@@ -76,15 +79,17 @@ public class GroceriesListFragment extends ListFragment {
 
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                GroceriesAdapter adapter =(GroceriesAdapter)getListAdapter();
                 switch (item.getItemId()) {
                     case R.id.item_delete:
                         for (int i = mAdapter.getCount(); i >= 0; i--) {
                             if (getListView().isItemChecked(i)) {
-                                mDataSource.deleteItem(mAdapter.getItem(i));
+                                mDataSource.deleteItem(adapter.getItem(i));
+                                getLoaderManager().restartLoader(0,null,GroceriesListFragment.this);
                             }
                         }
                         mode.finish();
-                        mAdapter.notifyDataSetChanged();
+                        adapter.notifyDataSetChanged();
                         return true;
 
                     default:
@@ -112,6 +117,26 @@ public class GroceriesListFragment extends ListFragment {
         i.putExtra(POSITION, position);
         startActivity(i);
     }
+
+    @Override
+    public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new GroceriesCursorLoader(getActivity());
+    }
+
+    @Override
+    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
+        ArrayList<Item> items = mDataSource.cursorToItems(data);
+        GroceriesStore.setGroceries(items);
+        mAdapter = new GroceriesAdapter(items);
+
+        setListAdapter(mAdapter);
+    }
+
+    @Override
+    public void onLoaderReset(android.content.Loader<Cursor> loader) {
+        setListAdapter(null);
+    }
+
 
     private class GroceriesAdapter extends ArrayAdapter<Item>{
 
@@ -187,6 +212,8 @@ public class GroceriesListFragment extends ListFragment {
         }
         return super.onContextItemSelected(item);
     }
+
+
 
     public void updateUI(){
         ((GroceriesAdapter)getListAdapter()).notifyDataSetChanged();

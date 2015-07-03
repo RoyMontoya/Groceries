@@ -1,11 +1,14 @@
 package com.example.amado.groceries;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.hardware.camera2.CameraDevice;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,18 +21,22 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class ItemViewFragment extends android.app.Fragment implements AdapterView.OnItemSelectedListener{
-    private static final String TAG = "GroceryFragment";
+
+    private static final String TAG = "ItemViewFragment";
     public static final String INDEX = "array_index";
     private static Item mItem;
     private int mPosition;
-    private Photo mPhoto;
     private static final int CAMERA_REQUEST=0;
     private static boolean isNew;
     public static boolean nameEmpty= false;
@@ -69,8 +76,10 @@ public class ItemViewFragment extends android.app.Fragment implements AdapterVie
                              Bundle savedInstanceState) {
         View v=  inflater.inflate(R.layout.fragment_item, container, false);
 
-        mPhotoPreview = (ImageView)v.findViewById(R.id.photo_item_preview);
-
+        mPhotoPreview =(ImageView)v.findViewById(R.id.photo_item_preview);
+        if(mItem.getPhoto()!= null) {
+            Picasso.with(getActivity()).load(mItem.getPhoto()).into(mPhotoPreview);
+        }
         Spinner unitsSpinner =(Spinner) v.findViewById(R.id.spinner_units);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.units_options,
                 android.R.layout.simple_spinner_item);
@@ -102,8 +111,7 @@ public class ItemViewFragment extends android.app.Fragment implements AdapterVie
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                mPhoto = new Photo();
-                i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mPhoto.getFile()));
+                i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mItem.getPhoto()));
                 startActivityForResult(i, CAMERA_REQUEST);
             }
         });
@@ -114,7 +122,8 @@ public class ItemViewFragment extends android.app.Fragment implements AdapterVie
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode== CAMERA_REQUEST){
-            Picasso.with(getActivity()).load(mPhoto.getFile()).into(mPhotoPreview);
+        Picasso.with(getActivity()).load(mItem.getPhoto()).into(mPhotoPreview);
+            
         }
     }
 

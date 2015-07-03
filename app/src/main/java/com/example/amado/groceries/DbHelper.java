@@ -17,6 +17,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String COLUMN_UNIT="unit";
     public static final String COLUMN_NOTES="notes";
     public static final String COLUMN_DONE="done";
+    public static final String COLUMN_IMAGE_FILE = "image";
     public static  DbHelper singleton = null;
 
     public DbHelper(Context context){
@@ -37,7 +38,8 @@ public class DbHelper extends SQLiteOpenHelper {
                         COLUMN_QTY+" DOUBLE, "+
                         COLUMN_UNIT+" TEXT, " +
                         COLUMN_NOTES+" TEXT, "+
-                        COLUMN_DONE+" TEXT"+")"
+                        COLUMN_DONE+" TEXT, "+
+                        COLUMN_IMAGE_FILE+" TEXT"+")"
         );
     }
 

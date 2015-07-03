@@ -1,5 +1,12 @@
 package com.example.amado.groceries;
 
+import android.os.Environment;
+
+import com.parse.ParseObject;
+
+import java.io.File;
+import java.util.UUID;
+
 /**
  * Created by Amado on 25/06/2015.
  */
@@ -10,11 +17,29 @@ public class Item {
     private int Quantity;
     private String notes;
     private boolean checked;
+    private File photo;
 
     public static final String UNIT_KG = "Kg";
     public static final String UNIT_GR = "Gr";
     public static final String UNIT_PZ = "Pz";
     public static final String UNIT_DZ = "Dz";
+    private static final File sDirectory= Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+
+    public File getPhoto() {
+        if (photo == null) {
+            photo = new File(sDirectory, UUID.randomUUID().toString()+".jpeg");
+        }
+        return photo;
+    }
+
+    public String getPhotoPath(){
+        String path = photo.getAbsolutePath();
+        return path;
+    }
+
+    public void setPhoto(File photo) {
+        this.photo = photo;
+    }
 
     public long getId() {
         return id;
