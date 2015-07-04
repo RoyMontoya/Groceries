@@ -6,10 +6,14 @@ import android.hardware.camera2.CameraDevice;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -20,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -46,17 +51,11 @@ public class ItemViewFragment extends android.app.Fragment implements AdapterVie
     public ItemViewFragment() {
     }
 
-    public static ItemViewFragment newInstance(int index){
-        Bundle args = new Bundle();
-        args.putInt(INDEX, index);
-        ItemViewFragment fragment = new ItemViewFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         getActivity().setTitle(R.string.grocery_info);
         Bundle args =getActivity().getIntent().getExtras();
         if(args == null){
@@ -111,6 +110,10 @@ public class ItemViewFragment extends android.app.Fragment implements AdapterVie
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if(mItem.getPhoto()!=null){
+                    mItem.getPhoto().delete();
+                }
+                mItem.createFile();
                 i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mItem.getPhoto()));
                 startActivityForResult(i, CAMERA_REQUEST);
             }
@@ -123,7 +126,7 @@ public class ItemViewFragment extends android.app.Fragment implements AdapterVie
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode== CAMERA_REQUEST){
         Picasso.with(getActivity()).load(mItem.getPhoto()).into(mPhotoPreview);
-            
+
         }
     }
 
@@ -140,7 +143,6 @@ public class ItemViewFragment extends android.app.Fragment implements AdapterVie
 
     public static void saveItem(){
         if(isNew){
-            //GroceriesStore.addItem(mItem);
             GroceriesListFragment.mDataSource.createItem(mItem);
         }else{
             GroceriesListFragment.mDataSource.updateItem(mItem);

@@ -23,7 +23,11 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 /**
@@ -167,6 +171,11 @@ public class GroceriesListFragment extends ListFragment implements android.app.L
                     item.setChecked(checkBox.isChecked());
                     }
                 });
+
+                CircleImageView thumbNailPreview = (CircleImageView)convertView.findViewById(R.id.thumb_preview);
+                if(item.getPhoto()!=null){
+                    Picasso.with(getActivity()).load(item.getPhoto()).noFade().into(thumbNailPreview);
+                }
 
 
 

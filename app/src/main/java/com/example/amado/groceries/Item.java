@@ -25,16 +25,12 @@ public class Item {
     public static final String UNIT_DZ = "Dz";
     private static final File sDirectory= Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
 
-    public File getPhoto() {
-        if (photo == null) {
-            photo = new File(sDirectory, UUID.randomUUID().toString()+".jpeg");
-        }
-        return photo;
+    public void createFile(){
+        photo= new File(sDirectory, UUID.randomUUID().toString()+".jpeg");
     }
 
-    public String getPhotoPath(){
-        String path = photo.getAbsolutePath();
-        return path;
+    public File getPhoto() {
+        return photo;
     }
 
     public void setPhoto(File photo) {

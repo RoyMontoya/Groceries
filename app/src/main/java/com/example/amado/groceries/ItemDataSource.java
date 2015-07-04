@@ -48,7 +48,7 @@ public class ItemDataSource {
         values.put(DbHelper.COLUMN_UNIT, item.getUnit());
         values.put(DbHelper.COLUMN_NOTES, item.getNotes());
         values.put(DbHelper.COLUMN_DONE, String.valueOf(item.isChecked()));
-        values.put(DbHelper.COLUMN_IMAGE_FILE, item.getPhotoPath());
+        values.put(DbHelper.COLUMN_IMAGE_FILE, item.getPhoto().getPath());
         String[] args = {String.valueOf(item.getId())};
         mDbHelper.getWritableDatabase().update(DbHelper.GROCERIES_TABLE, values, mDbHelper.COLUMN_ID + "=?", args);
     }
@@ -68,6 +68,7 @@ public class ItemDataSource {
         item.setNotes(cursor.getString(4));
         item.setChecked(stringToBoolean(cursor.getString(5)));
         item.setPhoto(getFileFromString(cursor.getString(6)));
+
         return item;
     }
 
