@@ -224,7 +224,5 @@ public class GroceriesListFragment extends ListFragment implements android.app.L
 
 
 
-    public void updateUI(){
-        ((GroceriesAdapter)getListAdapter()).notifyDataSetChanged();
-    }
+
 }

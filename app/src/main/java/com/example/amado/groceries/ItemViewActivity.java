@@ -25,6 +25,9 @@ public class ItemViewActivity extends ActionBarActivity {
         if(fragment==null){
             fragment = new ItemViewFragment();
         }
+        if(fragment.isAdded()){
+            return;
+        }
         fm.beginTransaction().add(R.id.container2, fragment)
                 .commit();
     }

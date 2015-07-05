@@ -20,6 +20,9 @@ public class GroceriesListActivity extends ActionBarActivity {
         if(mFragment==null){
             mFragment = new GroceriesListFragment();
         }
+        if(mFragment.isAdded()){
+            return;
+        }
         fm.beginTransaction().add(R.id.container,mFragment )
                 .commit();
     }

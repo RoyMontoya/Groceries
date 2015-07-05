@@ -36,7 +36,7 @@ import java.io.IOException;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class ItemViewFragment extends android.app.Fragment implements AdapterView.OnItemSelectedListener{
+public class ItemViewFragment extends android.app.Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener{
 
     private static final String TAG = "ItemViewFragment";
     public static final String INDEX = "array_index";
@@ -46,6 +46,7 @@ public class ItemViewFragment extends android.app.Fragment implements AdapterVie
     private static boolean isNew;
     public static boolean nameEmpty= false;
     private ImageView mPhotoPreview;
+    private boolean hasPhoto;
 
 
     public ItemViewFragment() {
@@ -61,10 +62,16 @@ public class ItemViewFragment extends android.app.Fragment implements AdapterVie
         if(args == null){
             mItem = new Item();
             isNew= true;
+            hasPhoto= false;
         }else{
             mPosition = args.getInt(GroceriesListFragment.POSITION);
             mItem = GroceriesStore.getGroceries().get(mPosition);
             isNew= false;
+            if(mItem.getPhoto()!=null){
+                hasPhoto= true;
+            }else{
+                hasPhoto =false;
+            }
         }
 
 
@@ -76,7 +83,8 @@ public class ItemViewFragment extends android.app.Fragment implements AdapterVie
         View v=  inflater.inflate(R.layout.fragment_item, container, false);
 
         mPhotoPreview =(ImageView)v.findViewById(R.id.photo_item_preview);
-        if(mItem.getPhoto()!= null) {
+        mPhotoPreview.setOnClickListener(this);
+        if(hasPhoto) {
             Picasso.with(getActivity()).load(mItem.getPhoto()).into(mPhotoPreview);
         }
         Spinner unitsSpinner =(Spinner) v.findViewById(R.id.spinner_units);
@@ -84,7 +92,12 @@ public class ItemViewFragment extends android.app.Fragment implements AdapterVie
                 android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         unitsSpinner.setAdapter(adapter);
+        if(!mItem.getUnit().isEmpty()){
+            int spinnerPosition = adapter.getPosition(mItem.getUnit());
+            unitsSpinner.setSelection(spinnerPosition);
+        }
         unitsSpinner.setOnItemSelectedListener(this);
+
 
         EditText nameEdit = (EditText)v.findViewById(R.id.name_editText);
         nameEdit.setText(mItem.getName());
@@ -110,7 +123,7 @@ public class ItemViewFragment extends android.app.Fragment implements AdapterVie
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if(mItem.getPhoto()!=null){
+                if(hasPhoto){
                     mItem.getPhoto().delete();
                 }
                 mItem.createFile();
@@ -125,8 +138,12 @@ public class ItemViewFragment extends android.app.Fragment implements AdapterVie
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode== CAMERA_REQUEST){
-        Picasso.with(getActivity()).load(mItem.getPhoto()).into(mPhotoPreview);
-
+            try{
+                Picasso.with(getActivity()).load(mItem.getPhoto()).into(mPhotoPreview);
+                hasPhoto=true;
+            }catch (Exception e){
+                hasPhoto= false;
+            }
         }
     }
 
@@ -138,7 +155,9 @@ public class ItemViewFragment extends android.app.Fragment implements AdapterVie
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-        mItem.setUnit(parent.getItemAtPosition(0).toString());
+        if(mItem.getUnit().isEmpty()) {
+            mItem.setUnit(parent.getItemAtPosition(0).toString());
+        }
     }
 
     public static void saveItem(){
@@ -149,6 +168,12 @@ public class ItemViewFragment extends android.app.Fragment implements AdapterVie
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setDataAndType(Uri.fromFile(mItem.getPhoto()), "image/jpeg");
+        startActivity(i);
+    }
 
 
     private class ChangeTextWatcher implements TextWatcher{
