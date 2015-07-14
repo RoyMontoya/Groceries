@@ -1,7 +1,32 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          android:id="@+id/container"
-          android:name="com.example.amado.groceries.GroceriesListFragment"
-          tools:layout="@layout/fragment_groceries_list"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"/>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:name="com.example.amado.groceries.GroceriesListFragment"
+              tools:layout="@layout/fragment_groceries_list"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+
+
+
+
+    <it.neokree.materialtabs.MaterialTabHost
+        android:id="@+id/tabHost"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:textColor="#FFFFFF"
+        app:primaryColor="@color/color_primary"
+        app:accentColor="@color/accent" />
+
+
+<FrameLayout
+             android:id="@+id/container"
+             android:name="com.example.amado.groceries.GroceriesListFragment"
+             tools:layout="@layout/fragment_groceries_list"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"/>
+
+
+
+</LinearLayout>

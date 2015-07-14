@@ -1,12 +1,9 @@
 package com.example.amado.groceries;
 
 import android.app.ListFragment;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -173,8 +170,8 @@ public class GroceriesListFragment extends ListFragment implements android.app.L
                 });
 
                 CircleImageView thumbNailPreview = (CircleImageView)convertView.findViewById(R.id.thumb_preview);
-                if(item.getPhoto()!=null){
-                    Picasso.with(getActivity()).load(item.getPhoto()).noFade().into(thumbNailPreview);
+                if(item.getPhotoFile()!=null){
+                    Picasso.with(getActivity()).load(item.getPhotoFile()).noFade().into(thumbNailPreview);
                 }
 
 

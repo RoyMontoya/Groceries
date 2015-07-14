@@ -1,15 +1,11 @@
 package com.example.amado.groceries;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.hardware.camera2.CameraDevice;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,13 +20,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 
 /**
@@ -67,7 +58,7 @@ public class ItemViewFragment extends android.app.Fragment implements AdapterVie
             mPosition = args.getInt(GroceriesListFragment.POSITION);
             mItem = GroceriesStore.getGroceries().get(mPosition);
             isNew= false;
-            if(mItem.getPhoto()!=null){
+            if(mItem.getPhotoFile()!=null){
                 hasPhoto= true;
             }else{
                 hasPhoto =false;
@@ -85,14 +76,14 @@ public class ItemViewFragment extends android.app.Fragment implements AdapterVie
         mPhotoPreview =(ImageView)v.findViewById(R.id.photo_item_preview);
         mPhotoPreview.setOnClickListener(this);
         if(hasPhoto) {
-            Picasso.with(getActivity()).load(mItem.getPhoto()).into(mPhotoPreview);
+            Picasso.with(getActivity()).load(mItem.getPhotoFile()).into(mPhotoPreview);
         }
         Spinner unitsSpinner =(Spinner) v.findViewById(R.id.spinner_units);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.units_options,
                 android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         unitsSpinner.setAdapter(adapter);
-        if(!mItem.getUnit().isEmpty()){
+         if(!isNew){
             int spinnerPosition = adapter.getPosition(mItem.getUnit());
             unitsSpinner.setSelection(spinnerPosition);
         }
@@ -124,10 +115,10 @@ public class ItemViewFragment extends android.app.Fragment implements AdapterVie
             public void onClick(View v) {
                 Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if(hasPhoto){
-                    mItem.getPhoto().delete();
+                    mItem.getPhotoFile().delete();
                 }
                 mItem.createFile();
-                i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mItem.getPhoto()));
+                i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mItem.getPhotoFile()));
                 startActivityForResult(i, CAMERA_REQUEST);
             }
         });
@@ -139,7 +130,7 @@ public class ItemViewFragment extends android.app.Fragment implements AdapterVie
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode== CAMERA_REQUEST){
             try{
-                Picasso.with(getActivity()).load(mItem.getPhoto()).into(mPhotoPreview);
+                Picasso.with(getActivity()).load(mItem.getPhotoFile()).into(mPhotoPreview);
                 hasPhoto=true;
             }catch (Exception e){
                 hasPhoto= false;
@@ -171,7 +162,7 @@ public class ItemViewFragment extends android.app.Fragment implements AdapterVie
     @Override
     public void onClick(View v) {
         Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setDataAndType(Uri.fromFile(mItem.getPhoto()), "image/jpeg");
+        i.setDataAndType(Uri.fromFile(mItem.getPhotoFile()), "image/jpeg");
         startActivity(i);
     }
 
@@ -220,4 +211,20 @@ public class ItemViewFragment extends android.app.Fragment implements AdapterVie
         }
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.menu_item, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.save:
+                ParseItem parseItem = new ParseItem(mItem);
+                ParseDataSource.saveToParse(parseItem);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

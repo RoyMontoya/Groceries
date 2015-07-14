@@ -2,8 +2,6 @@ package com.example.amado.groceries;
 
 import android.os.Environment;
 
-import com.parse.ParseObject;
-
 import java.io.File;
 import java.util.UUID;
 
@@ -17,7 +15,7 @@ public class Item {
     private int Quantity;
     private String notes;
     private boolean checked;
-    private File photo;
+    private File photoFile;
 
     public static final String UNIT_KG = "Kg";
     public static final String UNIT_GR = "Gr";
@@ -26,15 +24,19 @@ public class Item {
     private static final File sDirectory= Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
 
     public void createFile(){
-        photo= new File(sDirectory, UUID.randomUUID().toString()+".jpeg");
+        photoFile = new File(sDirectory, UUID.randomUUID().toString()+".jpeg");
     }
 
-    public File getPhoto() {
-        return photo;
+    public String getPhotoFileName(){
+        return photoFile.getName();
     }
 
-    public void setPhoto(File photo) {
-        this.photo = photo;
+    public File getPhotoFile() {
+        return photoFile;
+    }
+
+    public void setPhotoFile(File photoFile) {
+        this.photoFile = photoFile;
     }
 
     public long getId() {

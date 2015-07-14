@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:paddingLeft="16dp"
+              android:paddingRight="16dp"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <com.parse.ParseImageView
+        android:id="@+id/parse_image"
+        android:layout_width="0dp"
+        android:layout_weight="25"
+        android:layout_height="@dimen/thumb_image_size"
+
+        />
+    <TextView
+        android:id="@+id/parse_name_item"
+        android:text="item"
+        android:paddingLeft="16dp"
+        android:textSize="@dimen/normal_text_size"
+        android:gravity="center_vertical"
+        android:layout_weight="85"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

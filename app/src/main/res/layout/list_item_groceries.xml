@@ -12,7 +12,7 @@
         android:id="@+id/thumb_preview"
         android:paddingLeft="16dp"
         android:layout_width="0dp"
-        android:layout_height="56dp"
+        android:layout_height="@dimen/thumb_image_size"
         android:layout_weight="20"
         app:border_width="2dp"
         app:border_color="#FF000000"/>

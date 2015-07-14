@@ -15,4 +15,9 @@
     <string name="done_checkBox">Are you done with this Item?</string>
     <string name="delete">Delete</string>
     <string name="clean_name_toast">The item needs a name</string>
+    <string name="save">save</string>
+    <string name="explore">Explore</string>
+    <string name="list">My List</string>
+    <string name="title_activity_parse_item_view">ParseItemView</string>
+    <string name="add_button">Add Item to My List</string>
 </resources>

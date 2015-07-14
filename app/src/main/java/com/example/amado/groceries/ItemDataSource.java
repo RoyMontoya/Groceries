@@ -3,13 +3,9 @@ package com.example.amado.groceries;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.CursorWrapper;
-import android.net.Uri;
-import android.util.Log;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Amado on 01/07/2015.
@@ -48,7 +44,7 @@ public class ItemDataSource {
         values.put(DbHelper.COLUMN_UNIT, item.getUnit());
         values.put(DbHelper.COLUMN_NOTES, item.getNotes());
         values.put(DbHelper.COLUMN_DONE, String.valueOf(item.isChecked()));
-        values.put(DbHelper.COLUMN_IMAGE_FILE, item.getPhoto().getPath());
+        values.put(DbHelper.COLUMN_IMAGE_FILE, item.getPhotoFile().getPath());
         String[] args = {String.valueOf(item.getId())};
         mDbHelper.getWritableDatabase().update(DbHelper.GROCERIES_TABLE, values, mDbHelper.COLUMN_ID + "=?", args);
     }
@@ -67,7 +63,7 @@ public class ItemDataSource {
         item.setUnit(cursor.getString(3));
         item.setNotes(cursor.getString(4));
         item.setChecked(stringToBoolean(cursor.getString(5)));
-        item.setPhoto(getFileFromString(cursor.getString(6)));
+        item.setPhotoFile(getFileFromString(cursor.getString(6)));
 
         return item;
     }
