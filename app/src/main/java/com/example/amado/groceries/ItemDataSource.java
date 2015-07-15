@@ -23,12 +23,18 @@ public class ItemDataSource {
 
     public void createItem(Item item){
         ContentValues values = new ContentValues();
+        String photoPath = new String();
+        if(item.getPhotoFile()!=null){
+           photoPath =item.getPhotoFile().getPath();
+        }else{
+           photoPath = "";
+        }
         values.put(DbHelper.COLUMN_NAME, item.getName());
         values.put(DbHelper.COLUMN_QTY, item.getQuantity());
         values.put(DbHelper.COLUMN_UNIT, item.getUnit());
         values.put(DbHelper.COLUMN_NOTES, item.getNotes());
         values.put(DbHelper.COLUMN_DONE, String.valueOf(item.isChecked()));
-        values.put(DbHelper.COLUMN_IMAGE_FILE, "");
+        values.put(DbHelper.COLUMN_IMAGE_FILE, photoPath);
         item.setId(mDbHelper.getWritableDatabase().insert(DbHelper.GROCERIES_TABLE, null, values));
     }
 

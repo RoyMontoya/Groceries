@@ -1,5 +1,7 @@
 package com.example.amado.groceries;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -59,7 +61,6 @@ public class ParseItemViewFragment extends android.app.Fragment  implements Pars
              mItem.setPhotoFile(byteToFile());
                 mItem.setName((String) mNameText.getText());
                 GroceriesListFragment.mDataSource.createItem(mItem);
-
                 getActivity().finish();
             }
         });
