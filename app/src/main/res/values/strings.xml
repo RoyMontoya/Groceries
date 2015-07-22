@@ -20,4 +20,8 @@
     <string name="list">My List</string>
     <string name="title_activity_parse_item_view">ParseItemView</string>
     <string name="add_button">Add Item to My List</string>
+    <string name="empty_list">You have no Items. Create a new one</string>
+    <string name="create_button">Create Item</string>
+    <string name="dialog_text">Are you sure you want to share this item?</string>
+    <string name="dialog_title">Share this Item</string>
 </resources>

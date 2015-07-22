@@ -1,11 +1,14 @@
 package com.example.amado.groceries;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,13 +30,16 @@ import com.squareup.picasso.Picasso;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class ItemViewFragment extends android.app.Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener{
+public class ItemViewFragment extends android.support.v4.app.Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener{
 
     private static final String TAG = "ItemViewFragment";
     public static final String INDEX = "array_index";
+    private static final String CONFIRMATION_DIALOG = "confirmation";
     private static Item mItem;
     private int mPosition;
     private static final int CAMERA_REQUEST=0;
+    private static final int CONFIRMATION_REQUEST = 1;
+    public static final String EXTRA_CONFIRMATION = "extra_confirmation";
     private static boolean isNew;
     public static boolean nameEmpty= false;
     private ImageView mPhotoPreview;
@@ -128,13 +134,23 @@ public class ItemViewFragment extends android.app.Fragment implements AdapterVie
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode== CAMERA_REQUEST){
+        switch (requestCode){
+            case CAMERA_REQUEST:
             try{
                 Picasso.with(getActivity()).load(mItem.getPhotoFile()).into(mPhotoPreview);
                 hasPhoto=true;
-            }catch (Exception e){
-                hasPhoto= false;
+            }catch (Exception e) {
+                hasPhoto = false;
             }
+            case CONFIRMATION_REQUEST:
+                boolean confirmation =data.getBooleanExtra(EXTRA_CONFIRMATION, false);
+                if(confirmation==true){
+                    ParseItem parseItem = new ParseItem(mItem);
+                    ParseDataSource.saveToParse(parseItem);
+                    Log.d(TAG, "se subio");
+                }else{
+                    return;
+                }
         }
     }
 
@@ -214,16 +230,18 @@ public class ItemViewFragment extends android.app.Fragment implements AdapterVie
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
-        inflater.inflate(R.menu.menu_item, menu);
+        inflater.inflate(R.menu.menu_item_view, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.save:
-                ParseItem parseItem = new ParseItem(mItem);
-                ParseDataSource.saveToParse(parseItem);
+            case R.id.share:
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                ConfirmationDialog dialog = new ConfirmationDialog();
+                    dialog.setTargetFragment(ItemViewFragment.this, CONFIRMATION_REQUEST);
+              dialog.show(fm, CONFIRMATION_DIALOG);
         }
         return super.onOptionsItemSelected(item);
     }

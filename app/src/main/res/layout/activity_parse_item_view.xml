@@ -1,7 +1,25 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:theme="@style/Base.Theme.AppCompat.Light.DarkActionBar"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/color_primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.Toolbar>
+
+
+<FrameLayout
           android:id="@+id/container3"
           android:name="com.example.amado.groceries.ParseItemViewFragment"
           tools:layout="@layout/fragment_parse_item_view"
           android:layout_width="match_parent"
           android:layout_height="match_parent"/>
+
+</LinearLayout>
